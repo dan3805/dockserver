@@ -19,18 +19,11 @@ services:
       - "UMASK=${UMASK}"
       - "VPNSP=airvpn"
       - "VPN_TYPE=wireguard"
-      - "WIREGUARD_PRESHARED_KEY=<ADD_WIREGUARD_PRESHARED_KEY_HERE>"
-      - "WIREGUARD_PRIVATE_KEY=<ADD_WIREGUARD_PRIVATE_KEY_HERE>"
-      - "WIREGUARD_ADDRESSES=10.168.41.50/8"
-      - FIREWALL_VPN_INPUT_PORTS=25858
-      - "CITY=MONTREAL"
-      #- "HEALTH_ADDRESS_TO_PING=10.128.0.1"
-      #- "DNS_ADDRESS=10.128.0.1"
-     # - VPN_SERVICE_PROVIDER=mullvad
-      #- VPN_TYPE=wireguard
-     # - WIREGUARD_PRIVATE_KEY=wOEI9rqqbDwnN8/Bpp22sVz48T71vJ4fYmFWujulwUU=
-     # - WIREGUARD_ADDRESSES=10.64.222.21/32
-     # - SERVER_CITIES=Amsterdam
+      - "VPN_SERVICE_PROVIDER=mullvad"
+      - "VPN_TYPE=wireguard"
+      - "WIREGUARD_PRIVATE_KEY=wOEI9rqqbDwnN8/Bpp22sVz48T71vJ4fYmFWujulwUU="
+      - "WIREGUARD_ADDRESSES=10.64.222.21/32"
+      - "SERVER_CITIES=Amsterdam"
     volumes:
       - "${APPFOLDER}/gluetun2/:/gluetun"
   qbittorrent:
