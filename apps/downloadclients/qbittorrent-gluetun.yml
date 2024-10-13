@@ -1,4 +1,3 @@
----
 version: "3"
 services:
   gluetun:
@@ -10,18 +9,30 @@ services:
     restart: "${RESTARTAPP}"
     networks:
       - ${DOCKERNETWORK}
+    ports:
+      - 25858:25858/tcp # Shadowsocks
+      - 25858:25858/udp # Shadowsocks
     environment:
       - "GID=${ID}"
       - "UID=${ID}"
       - "TZ=${TZ}"
       - "UMASK=${UMASK}"
-      - "VPN_SERVICE_PROVIDER=${GLUETUN_VPN_SERVICE_PROVIDER}"
-      - "VPN_TYPE=${GLUETUN_VPN_TYPE}"
-      - "OPENVPN_USER=${GLUETUN_OPEN_VPN_USER}"
-      - "OPENVPN_PASSWORD=${GLUETUN_OPEN_VPN_PASSWORD}"
-      - "REGION=${GLUETUN_VPN_REGION}"
+      - "VPNSP=airvpn"
+      - "VPN_TYPE=wireguard"
+      - "WIREGUARD_PRESHARED_KEY=<ADD_WIREGUARD_PRESHARED_KEY_HERE>"
+      - "WIREGUARD_PRIVATE_KEY=<ADD_WIREGUARD_PRIVATE_KEY_HERE>"
+      - "WIREGUARD_ADDRESSES=10.168.41.50/8"
+      - FIREWALL_VPN_INPUT_PORTS=25858
+      - "CITY=MONTREAL"
+      #- "HEALTH_ADDRESS_TO_PING=10.128.0.1"
+      #- "DNS_ADDRESS=10.128.0.1"
+     # - VPN_SERVICE_PROVIDER=mullvad
+      #- VPN_TYPE=wireguard
+     # - WIREGUARD_PRIVATE_KEY=wOEI9rqqbDwnN8/Bpp22sVz48T71vJ4fYmFWujulwUU=
+     # - WIREGUARD_ADDRESSES=10.64.222.21/32
+     # - SERVER_CITIES=Amsterdam
     volumes:
-      - "${APPFOLDER}/gluetun/:/gluetun"
+      - "${APPFOLDER}/gluetun2/:/gluetun"
   qbittorrent:
     container_name: "qbittorrent"
     environment:
@@ -30,9 +41,7 @@ services:
       - "TZ=${TZ}"
       - "UMASK=${UMASK}"
       - "WEBUI_PORT=8080"
-      - "DOCKER_MODS=ghcr.io/gilbn/theme.park:qbittorrent"
-      - "TP_THEME=${QBITORRENTTHEME}"
-    image: "${QBITORRENTIMAGE}"
+    image: "lscr.io/linuxserver/qbittorrent:latest"
     restart: "${RESTARTAPP}"
     network_mode: "service:gluetun"
     security_opt:
